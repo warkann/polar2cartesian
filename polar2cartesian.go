@@ -18,7 +18,7 @@ type cartesian struct {
 	y float64
 }
 
-var prompt = "Enter a radius and an angle (un degrees), e.g., 12.5 90, " + "or %s to quit."
+var prompt = "Enter a radius and an angle (in degrees), e.g., 12.5 90, " + "or %s to quit."
 func init() {
 	if runtime.GOOS == "windows" {
 		prompt = fmt.Sprintf(prompt, "Ctrl+Z, Enter")
@@ -55,7 +55,7 @@ func createSlover(questions chan polar) chan cartesian {
 	return answers
 }
 
-const result = "Polar radius=%.02f q=%.02f° ® Cartesian x=%.02f y=%.02f\n"
+const result = "Polar radius=%.02f angle=%.02f° ® Cartesian x=%.02f y=%.02f\n"
 func interact(questions chan polar, answers chan cartesian) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println(prompt)
@@ -68,7 +68,7 @@ func interact(questions chan polar, answers chan cartesian) {
 		}
 		var radius, O float64
 		if _, err := fmt.Sscanf(line, "%f %f", &radius, &O); err != nil {
-			fmt.Fprintf(os.Stderr, "invalid input")
+			fmt.Fprintf(os.Stderr, "invalid input \n")
 			continue
 		}
 		questions <-polar{radius, O}
